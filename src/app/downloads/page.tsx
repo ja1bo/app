@@ -1,6 +1,6 @@
 "use client";
+/// THIS PAGE IS UNFINISHED, AND SHOULD NEVER HAD BEEN COMITTED
 
-import { invoke } from "@tauri-apps/api/core";
 import {
   ClockIcon,
   DownloadIcon,
@@ -12,6 +12,7 @@ import {
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Button } from "@/components/primitives/button";
 import Input from "@/components/primitives/input";
+import { getTauRPC } from "@/lib/taurpc/useTaurpc";
 
 type DownloadStatus =
   | "queued"
@@ -88,8 +89,9 @@ const DownloadsPage = () => {
             d.sizeBytes ?? 10 * 1024 * 1024 + Math.random() * 150 * 1024 * 1024,
         }));
         startedCount = toStart.length;
+        const rpc = getTauRPC();
         toStart.forEach((item) => {
-          invoke("download_mod", { id: item.id }).catch((e) => {
+          rpc.download_mod(item.id).catch((e) => {
             console.error(
               "Failed to initiate backend download for",
               item.id,
@@ -232,9 +234,12 @@ const DownloadsPage = () => {
         },
       ]);
       // Fire backend download call
-      invoke("download_mod", { id }).catch((e) =>
-        console.error("Failed to start backend download", id, e),
-      );
+      const rpc = getTauRPC();
+      rpc
+        .download_mod(id)
+        .catch((e) =>
+          console.error("Failed to initiate backend download", id, e),
+        );
       return prevQueued.filter((q) => q.id !== id);
     });
   };
