@@ -4,7 +4,7 @@ mod binary;
 mod ui;
 
 use lib_vmm::{api::DefaultProviderApi, runtime::ContextBuilder};
-use log::{info, trace, warn};
+use tracing::{info, trace, warn};
 use tracing_log::LogTracer;
 use std::{env, sync::Arc};
 

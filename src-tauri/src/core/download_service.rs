@@ -2,16 +2,12 @@ use std::{path::PathBuf, sync::Arc};
 use async_trait::async_trait;
 use futures_util::StreamExt;
 use lib_vmm::{services::DownloadService, traits::mod_provider::ModDownloadResult};
-use log::{debug, error, info};
 use reqwest::Client;
 use serde::{Deserialize, Serialize};
 use tauri::AppHandle;
-use tokio::{fs::File, io::AsyncWriteExt, sync::{mpsc, watch::{self, Sender}}};
-use once_cell::sync::OnceCell;
+use tokio::{fs::File, io::AsyncWriteExt, sync::{OnceCell, mpsc, watch::{self, Sender}}};
 use tauri::Emitter;
-use tracing::warn;
-
-// use crate::traits::ModDownloadResult;
+use tracing::{debug, error, warn, info};
 
 #[derive(Serialize, Deserialize, Clone)]
 struct DownloadStartedPayload {
