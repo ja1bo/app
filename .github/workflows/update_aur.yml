@@ -20,9 +20,17 @@ jobs:
           _commit_count=$(git rev-list --count HEAD)
           _commit_hash=$(git rev-parse --short HEAD)
 
+          echo "_commit_count=$_commit_count"
+          echo "_commit_hash=$_commit_hash"
+          echo "Current pkgver: "
+          grep "^pkgver=" PKGBUILD
+
           # Format string
           new_pkgver="r${_commit_count}.${_commit_hash}"
           sed -i "s/^pkgver=.*/pkgver=$new_pkgver/" PKGBUILD
+
+          echo "updated PKGBUILD version: "
+          grep "^pkgver=" PKGBUILD
 
       - name: Publish AUR package
         uses: KSXGitHub/github-actions-deploy-aur@v4.1.1
